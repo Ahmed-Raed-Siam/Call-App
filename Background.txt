@@ -1,0 +1,83 @@
+           DB::beginTransaction();
+
+//            dd(
+//                $user->orders()->get(),
+//            );
+
+            try {
+                $order = $user->orders()->create([
+                    'user_id' => $user_id,
+//                    'status',
+//                    'tax' => $request_tax,
+//                    'discount' => $request_discount,
+                    'billing_address' => $request_billing_address,
+                    'billing_city' => $request_billing_city,
+                    'billing_neighborhood' => $request_billing_neighborhood,
+                    'billing_street' => $request_billing_street,
+                    'billing_building_number' => $request_billing_building_number,
+                    'booking_date' => $request_booking_date,
+                    'total_cost' => $total_price,
+                ]);
+
+//                dd(
+//                    $order,
+//                    $user->cartProducts,
+//                );
+
+                $order_status = $order->status;
+                
+                dd(
+                    $order_status,
+                );
+
+                if ($order !== $order_status):
+                    foreach ($user->cartProducts as $product) {
+                        $order->products()->attach($product->id, [
+                            'quantity' => $product->cart->quantity,
+                            'price' => $product->cart->price,
+                        ]);
+                    }
+
+                    /*foreach ($user->cartProducts as $product) {
+                        //$user->cartProducts()->detach($product->id);
+
+                    }*/
+//                dd(
+//                    $order,
+//                    $user->cartProducts,
+//                    $order->products()->get(),
+//                );
+                    Cart::where('user_id', $user->id)->delete();
+
+                    DB::commit();
+
+                endif;
+
+                //event(new NewOrder($order));
+
+//            Auth::user()->notify(new NewOrderNotification($order));
+
+
+                //event(new OrderCreated($order));
+
+            } catch (Throwable $e) {
+                DB::rollBack();
+                return Response::json([
+                    'message' => $e->getMessage(),
+                ], 200);
+            }
+
+
+            $message = "$order->name order created successfully>";
+            return Response::json([
+                'message' => $message,
+                'order' => $order,
+            ], 200);
+
+            dd(
+                $order,
+                $user->cartProducts,
+                $order->products()->get(),
+            );
+
+        endif;
