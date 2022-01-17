@@ -1,0 +1,14 @@
+@media (max-width: 700px) {
+    .main-header form {
+        margin-top: 10px;
+    }
+}
+
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
