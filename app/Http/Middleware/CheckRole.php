@@ -36,6 +36,9 @@ class CheckRole
                     'code' => '403',
                 ], 403);
             endif;
+            $message = 'You are admin! Please Enter to admin link';
+//            redirect()->route('dashboard.admin');
+//            abort(403, $message);
             abort(403);
         endif;
 
