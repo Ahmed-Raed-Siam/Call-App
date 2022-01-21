@@ -13,14 +13,20 @@ use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
+     * @param Request $request
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $search = $request->get('search');
+
         $products = Product::withoutTrashed()->orderBy('order', 'desc')
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orwhere('cost', 'LIKE', "%{$search}%");
+            })
             ->orderBy('created_at', 'desc')
             ->orderBy('updated_at', 'desc')
             ->paginate(10);
