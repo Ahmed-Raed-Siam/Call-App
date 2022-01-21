@@ -22,7 +22,52 @@
         <!-- /.card-header -->
 
         <div class="card-body p-0">
-            <table class="table table-hover table-responsive table-striped projects">
+            <div class="row p-3">
+                <div class="col col-md-6">
+                    <div class="dt-buttons btn-group flex-wrap">
+                        <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0"
+                                aria-controls="example1" type="button"><span>Copy</span></button>
+                        <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0"
+                                aria-controls="example1" type="button"><span>CSV</span></button>
+                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                aria-controls="example1" type="button"><span>Excel</span></button>
+                        <button class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0"
+                                aria-controls="example1" type="button"><span>PDF</span></button>
+                        <button class="btn btn-secondary buttons-print" tabindex="0" aria-controls="example1"
+                                type="button"><span>Print</span></button>
+                        <div class="btn-group">
+                            <button class="btn btn-secondary buttons-collection dropdown-toggle buttons-colvis"
+                                    tabindex="0" aria-controls="example1" type="button" aria-haspopup="true"
+                                    aria-expanded="false"><span>Column visibility</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col col-md-6 flex justify-content-end">
+                    <div id="example1_filter" class="dataTables_filter">
+                        <form class="m-0"
+                              action="{{ route('dashboard.products.index') }}"
+                              method="GET">
+                            @csrf
+                            <div class="input-group">
+                                <input type="search" name="search" class="form-control form-control-sm"
+                                       placeholder="Keywords"
+                                       aria-label="Search for specific product" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-outline-secondary" type="submit" data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="{{ __('Search for specific product') }}">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+            <table class="table table-bordered table-hover table-responsive table-striped projects">
                 <thead>
                 <tr>
                     <th style="width: 1%">
@@ -113,9 +158,7 @@
                                   method="POST">
                                 @csrf
                                 @method('DELETE')
-                                {{ csrf_field() }}
-                                <i class="fas fa-trash-alt">
-                                </i>
+                                <i class="fas fa-trash-alt"></i>
                                 <input name="delete" type="submit" class="btn btn-danger btn-sm p-0"
                                        value="Delete"
                                        data-toggle="tooltip" data-placement="top"
@@ -124,6 +167,11 @@
                         </td>
                     </tr>
                 @empty
+                    <tr class="align-content-center">
+                        <td colspan="7">
+                            <h1 class="text-center">Not Found</h1>
+                        </td>
+                    </tr>
                 @endforelse
                 </tbody>
             </table>
